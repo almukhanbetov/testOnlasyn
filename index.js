@@ -18,10 +18,17 @@ bot.on('message', async  (msg) => {
             await bot.sendMessage(chatId, "Я бот") 
             break;
         case '/info':
-            const persons = await pool.query(`SELECT * FROM person`)
-            persons.rows.forEach(item=>{          
-            bot.sendMessage(chatId, `<i>${item.status}</i>   <i>${item.rank}</i>  <strong>${item.name}</strong>   <u>${item.phone}</u>`, {parse_mode:"HTML"})
-            })  
+            try {
+                const persons = await pool.query(`SELECT * FROM person`)
+                persons.rows.forEach(item=>{          
+                bot.sendMessage(chatId, `<i>${item.status}</i>   <i>${item.rank}</i>  <strong>${item.name}</strong>   <u>${item.phone}</u>`, {parse_mode:"HTML"})
+                }) 
+                bot.sendMessage(chatId,"Выполнено") 
+                
+            } catch (error) {               
+                bot.sendMessage("Ошибка :", error) 
+            }
+           
             break;                 
     }     
 });
