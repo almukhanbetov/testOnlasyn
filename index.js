@@ -13,12 +13,15 @@ bot.on('message', async  (msg) => {
     const chatId = msg.chat.id;
     const text = msg.text;
     switch(text){
-        case '/start':
+        case '/start':            
             await bot.sendMessage(chatId, `${msg.from.first_name}====${chatId}`)
             await bot.sendMessage(chatId, "Я бот") 
             break;
-        case '⭐️Командование':
-            await getData(chatId,  1); 
-            break;        
+        case '/info':
+            const persons = await pool.query(`SELECT * FROM person`)
+            persons.rows.forEach(item=>{          
+            bot.sendMessage(chatId, `<i>${item.status}</i>   <i>${item.rank}</i>  <strong>${item.name}</strong>   <u>${item.phone}</u>`, {parse_mode:"HTML"})
+            })  
+            break;                 
     }     
 });
